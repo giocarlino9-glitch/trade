@@ -1,0 +1,24 @@
+name: Trading Agent
+
+on:
+  schedule:
+    - cron: '*/5 13-20 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic pytz
+
+      - name: Run trading agent
+        run: python trading_agent_full.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
